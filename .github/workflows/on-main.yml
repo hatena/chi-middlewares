@@ -1,0 +1,16 @@
+---
+name: CI for main branch
+
+"on":
+  push:
+    branches: [main]
+
+jobs:
+  test-go:
+    uses: ./.github/workflows/task-test-go.yml
+
+  lint-markdown:
+    uses: ./.github/workflows/task-lint-markdown.yml
+
+  lint-yaml:
+    uses: ./.github/workflows/task-lint-yaml.yml

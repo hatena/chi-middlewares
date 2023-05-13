@@ -1,0 +1,46 @@
+---
+name: CI for pull requests
+
+"on":
+  pull_request:
+
+jobs:
+  judge-exec:
+    outputs:
+      needs-test-go: ${{ steps.judge-needs-test-go.outputs.any_changed }}
+      needs-lint-markdown: ${{ steps.judge-needs-lint-markdown.outputs.any_changed }}
+      needs-lint-yaml: ${{ steps.judge-needs-lint-yaml.outputs.any_changed }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: judge-needs-test-go
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            **/*.go
+            .github/workflows/task-test-go.yml
+      - id: judge-needs-lint-markdown
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            **/*.md
+      - id: judge-needs-lint-yaml
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            **/*.y{,a}ml
+
+  test-go:
+    needs: judge-exec
+    if: needs.judge-exec.outputs.needs-test-go == 'true'
+    uses: ./.github/workflows/task-test-go.yml
+
+  lint-markdown:
+    needs: judge-exec
+    if: needs.judge-exec.outputs.needs-lint-markdown == 'true'
+    uses: ./.github/workflows/task-lint-markdown.yml
+
+  lint-yaml:
+    needs: judge-exec
+    if: needs.judge-exec.outputs.needs-lint-yaml == 'true'
+    uses: ./.github/workflows/task-lint-yaml.yml
