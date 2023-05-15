@@ -18,6 +18,8 @@ jobs:
         with:
           files: |
             **/*.go
+            go.mod
+            go.sum
             .github/workflows/task-test-go.yml
       - id: judge-needs-lint-markdown
         uses: tj-actions/changed-files@v35
