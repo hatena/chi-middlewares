@@ -28,7 +28,7 @@ func Test_Logger(t *testing.T) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			log := GetLogger(r.Context())
 			log.Info(message)
-			w.Write([]byte(""))
+			w.Write([]byte("")) // nolint:errcheck
 		})
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, httptest.NewRequest("GET", "/", nil))
@@ -55,7 +55,7 @@ func Test_Logger(t *testing.T) {
 			reqID = chiMiddleware.GetReqID(ctx)
 			log := GetLogger(ctx)
 			log.Info("")
-			w.Write([]byte(""))
+			w.Write([]byte("")) // nolint:errcheck
 		})
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, httptest.NewRequest("GET", "/", nil))

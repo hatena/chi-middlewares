@@ -42,7 +42,7 @@ func Test_RequestLogger(t *testing.T) {
 		r.Use(Logger(log))
 		r.Use(RequestLogger())
 		r.Get(path, func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte(""))
+			w.Write([]byte("")) // nolint:errcheck
 		})
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, httptest.NewRequest("GET", path, nil))
@@ -78,7 +78,7 @@ func Test_RequestLogger(t *testing.T) {
 		r.Use(Logger(log))
 		r.Use(RequestLogger())
 		r.Get(path, func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte(""))
+			w.Write([]byte("")) // nolint:errcheck
 		})
 		w := httptest.NewRecorder()
 		req := httptest.NewRequest("GET", path, nil)
