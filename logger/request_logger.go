@@ -1,4 +1,4 @@
-package middleware
+package logger
 
 import (
 	"context"
@@ -6,18 +6,16 @@ import (
 	"net/http"
 	"time"
 
-	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 	"golang.org/x/exp/slog"
 )
 
-// RequestLogger は、HTTP request が完了した時にその要約を log に吐く。Logger は RequestLogger の前に置かねばならない。middleware.RealIP は RequestLogger の前に置かねばならない。chiMiddleware.Recoverer は RequestLogger の後に置かねばならない
-func RequestLogger() func(http.Handler) http.Handler {
-	return chiMiddleware.RequestLogger(&requestLogger{})
-}
+// RequestLogger は、HTTP request が完了した時にその要約を log に吐く。Logger は RequestLogger の前に置かねばならない。middleware.RealIP は RequestLogger の前に置かねばならない。middleware.Recoverer は RequestLogger の後に置かねばならない
+var RequestLogger func(http.Handler) http.Handler = middleware.RequestLogger(&requestLogger{})
 
 type requestLogger struct{}
 
-func (l *requestLogger) NewLogEntry(r *http.Request) chiMiddleware.LogEntry {
+func (l *requestLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 	ctx := r.Context()
 
 	log := GetLogger(ctx)
@@ -64,7 +62,7 @@ func (e *requestLogEntry) Write(
 	)
 }
 
-// chiMiddleware.Recoverer が呼ぶ
+// middleware.Recoverer が呼ぶ
 func (e *requestLogEntry) Panic(v interface{}, stack []byte) {
 	e.log.ErrorCtx(
 		e.ctx,

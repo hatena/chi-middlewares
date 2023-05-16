@@ -1,4 +1,4 @@
-package middleware
+package logger
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/exp/slog"
 )
@@ -40,7 +40,7 @@ func Test_RequestLogger(t *testing.T) {
 
 		r := chi.NewRouter()
 		r.Use(Logger(log))
-		r.Use(RequestLogger())
+		r.Use(RequestLogger)
 		r.Get(path, func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("")) // nolint:errcheck
 		})
@@ -76,7 +76,7 @@ func Test_RequestLogger(t *testing.T) {
 
 		r := chi.NewRouter()
 		r.Use(Logger(log))
-		r.Use(RequestLogger())
+		r.Use(RequestLogger)
 		r.Get(path, func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("")) // nolint:errcheck
 		})
@@ -114,8 +114,8 @@ func Test_RequestLogger(t *testing.T) {
 
 		r := chi.NewRouter()
 		r.Use(Logger(log))
-		r.Use(RequestLogger())
-		r.Use(chiMiddleware.Recoverer)
+		r.Use(RequestLogger)
+		r.Use(middleware.Recoverer)
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			panic(message)
 		})

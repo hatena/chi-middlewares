@@ -1,4 +1,4 @@
-package middleware
+package logger
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 	"golang.org/x/exp/slog"
 )
 
@@ -48,11 +48,11 @@ func Test_Logger(t *testing.T) {
 		var reqID string
 
 		r := chi.NewRouter()
-		r.Use(chiMiddleware.RequestID)
+		r.Use(middleware.RequestID)
 		r.Use(Logger(log))
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			reqID = chiMiddleware.GetReqID(ctx)
+			reqID = middleware.GetReqID(ctx)
 			log := GetLogger(ctx)
 			log.Info("")
 			w.Write([]byte("")) // nolint:errcheck
