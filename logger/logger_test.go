@@ -75,7 +75,7 @@ func Test_NewContext(t *testing.T) {
 		log := slog.New(slog.NewJSONHandler(io.Discard, &slog.HandlerOptions{}))
 		ctx = NewContext(ctx, log)
 
-		log2, ok := ctx.Value(logKey{}).(*slog.Logger)
+		log2, ok := ctx.Value(LogKey{}).(*slog.Logger)
 		if !ok {
 			t.Fatal("logger is not in the context")
 		}
@@ -91,7 +91,7 @@ func Test_GetLogger(t *testing.T) {
 		log := slog.New(slog.NewJSONHandler(io.Discard, &slog.HandlerOptions{}))
 
 		ctx := context.Background()
-		ctx = context.WithValue(ctx, logKey{}, log)
+		ctx = context.WithValue(ctx, LogKey{}, log)
 
 		got := GetLogger(ctx)
 		if log != got {
