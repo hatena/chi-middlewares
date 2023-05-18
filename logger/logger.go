@@ -20,11 +20,16 @@ func Logger(log *slog.Logger) func(http.Handler) http.Handler {
 			if reqID := middleware.GetReqID(ctx); reqID != "" { // RequestID はこの前に適用する事
 				log2 = log2.With(slog.String("req_id", reqID))
 			}
-			ctx = context.WithValue(ctx, logKey{}, log2)
+			ctx = NewContext(ctx, log2)
 			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+// NewContext は、slog.Logger を context.Context に格納する。GetLogger で取り出せる
+func NewContext(ctx context.Context, log *slog.Logger) context.Context {
+	return context.WithValue(ctx, logKey{}, log)
 }
 
 // GetLogger は、Logger で context に格納した slog.Logger を取り出す。slog.Logger を格納していなかったら、slog.Default() を返す

@@ -69,6 +69,23 @@ func Test_Logger(t *testing.T) {
 	})
 }
 
+func Test_NewContext(t *testing.T) {
+	t.Run("slog.Logger を格納する", func(t *testing.T) {
+		ctx := context.Background()
+		log := slog.New(slog.NewJSONHandler(io.Discard, &slog.HandlerOptions{}))
+		ctx = NewContext(ctx, log)
+
+		log2, ok := ctx.Value(logKey{}).(*slog.Logger)
+		if !ok {
+			t.Fatal("logger is not in the context")
+		}
+
+		if log != log2 {
+			t.Error("got a different logger")
+		}
+	})
+}
+
 func Test_GetLogger(t *testing.T) {
 	t.Run("格納した slog.Logger を取り出せる", func(t *testing.T) {
 		log := slog.New(slog.NewJSONHandler(io.Discard, &slog.HandlerOptions{}))
