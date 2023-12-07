@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
       - uses: golangci/golangci-lint-action@v3
         with:
           skip-pkg-cache: true # https://github.com/golangci/golangci-lint-action/issues/677
@@ -23,6 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
       - name: test
         run: make test-go
