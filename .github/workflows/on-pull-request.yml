@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: judge-needs-test-go
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             **/*.go
@@ -22,12 +22,12 @@ jobs:
             go.sum
             .github/workflows/task-test-go.yml
       - id: judge-needs-lint-markdown
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             **/*.md
       - id: judge-needs-lint-yaml
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             **/*.y{,a}ml
