@@ -3,10 +3,10 @@ package logger
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"golang.org/x/exp/slog"
 )
 
 type LogKey struct{}
