@@ -3,11 +3,11 @@ package logger
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"golang.org/x/exp/slog"
 )
 
 // RequestLogger は、HTTP request が完了した時にその要約を log に吐く。Logger は RequestLogger の前に置かねばならない。middleware.RealIP は RequestLogger の前に置かねばならない。middleware.Recoverer は RequestLogger の後に置かねばならない
@@ -64,7 +64,7 @@ func (e *requestLogEntry) Write(
 
 // middleware.Recoverer が呼ぶ
 func (e *requestLogEntry) Panic(v interface{}, stack []byte) {
-	e.log.ErrorCtx(
+	e.log.ErrorContext(
 		e.ctx,
 		"panic",
 		slog.String("panic", fmt.Sprintf("%+v", v)),
