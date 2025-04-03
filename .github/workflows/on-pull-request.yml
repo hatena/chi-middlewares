@@ -12,9 +12,9 @@ jobs:
       needs-lint-yaml: ${{ steps.judge-needs-lint-yaml.outputs.any_changed }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - id: judge-needs-test-go
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46.0.3
         with:
           files: |
             **/*.go
@@ -22,12 +22,12 @@ jobs:
             go.sum
             .github/workflows/task-test-go.yml
       - id: judge-needs-lint-markdown
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46.0.3
         with:
           files: |
             **/*.md
       - id: judge-needs-lint-yaml
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46.0.3
         with:
           files: |
             **/*.y{,a}ml
