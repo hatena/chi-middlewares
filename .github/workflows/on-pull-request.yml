@@ -9,10 +9,15 @@ jobs:
     outputs:
       needs-test-go: ${{ steps.judge-needs-test-go.outputs.any_changed }}
       needs-lint-markdown: ${{ steps.judge-needs-lint-markdown.outputs.any_changed }}
-      needs-lint-yaml: ${{ steps.judge-needs-lint-yaml.outputs.any_changed }}
+      needs-lint-github-actions: ${{ steps.judge-needs-lint-github-actions.outputs.any_changed }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
       - id: judge-needs-test-go
         uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46.0.5
         with:
@@ -26,23 +31,32 @@ jobs:
         with:
           files: |
             **/*.md
-      - id: judge-needs-lint-yaml
+      - id: judge-needs-lint-github-actions
         uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46.0.5
         with:
           files: |
-            **/*.y{,a}ml
+            .github/actions/**
+            .github/workflows/**
 
   test-go:
     needs: judge-exec
     if: needs.judge-exec.outputs.needs-test-go == 'true'
+    permissions:
+      contents: read
     uses: ./.github/workflows/task-test-go.yml
 
   lint-markdown:
     needs: judge-exec
     if: needs.judge-exec.outputs.needs-lint-markdown == 'true'
+    permissions:
+      contents: read
     uses: ./.github/workflows/task-lint-markdown.yml
 
-  lint-yaml:
+  lint-github-actions:
     needs: judge-exec
-    if: needs.judge-exec.outputs.needs-lint-yaml == 'true'
-    uses: ./.github/workflows/task-lint-yaml.yml
+    if: needs.judge-exec.outputs.needs-lint-github-actions == 'true'
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/task-lint-github-actions.yml

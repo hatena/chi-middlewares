@@ -7,10 +7,18 @@ name: CI for main branch
 
 jobs:
   test-go:
+    permissions:
+      contents: read
     uses: ./.github/workflows/task-test-go.yml
 
   lint-markdown:
+    permissions:
+      contents: read
     uses: ./.github/workflows/task-lint-markdown.yml
 
-  lint-yaml:
-    uses: ./.github/workflows/task-lint-yaml.yml
+  lint-github-actions:
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/task-lint-github-actions.yml
