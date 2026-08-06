@@ -2,7 +2,7 @@ module github.com/hatena/chi-middlewares
 
 go 1.22
 
-toolchain go1.24.2
+toolchain go1.26.5
 
 require (
 	github.com/go-chi/chi/v5 v5.2.1
